@@ -1,0 +1,16 @@
+{
+    "name": "junior/framework",
+    "autoload": {
+        "psr-4": {
+            "App\\Framework\\": "app/src",
+            "App\\Framework\\Infra\\":"app/infra",
+            "Route\\Framework\\": "routes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Paulo",
+            "email": "morganti.artur@gmail.com"
+        }
+    ]
+}

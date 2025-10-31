@@ -12,32 +12,32 @@ class Model
     protected static ?Repository $repository;
     private static $class;
 
+    private static $namespace;
     private static $instance;
-    public function __construct() {}
+    
     public static function getInstance(): self
     {
         if (self::$instance == null) {
             self::$instance = new self;
         }
+        self::$namespace = get_called_class();
+        
         return self::$instance;
     }
 
-    protected function setRepository(Repository $repository): void
+    protected function setRepository(Repository $repository, string $tableName): void
     {
-        self::$repository = $repository;
+        self::getInstance()::$repository = $repository;
+        self::$repository->setTable($tableName);
     }
     public static function all(): array|null
     {
-        $namespace = get_called_class();
-
-        self::$class = new $namespace();
-        $table = self::$class::TABLE;
-
-        $data = self::getInstance()::$repository->getAll($table);
-
+        $data = self::getInstance()::$repository->getAll();
         $dataList = [];
+        $class = self::$namespace;
+        
         foreach ($data as $_data) {
-            $classToHydrate = new $namespace();
+            $classToHydrate = new $class();
             $dataList[] = self::getInstance()->hydrateData($classToHydrate, $_data);
         }
 
@@ -46,13 +46,10 @@ class Model
 
     public static function save(): int
     {
-        $namespace = get_called_class();
-
         $dataRequest = Request::getRequest()->post();
-
         self::$class = new $namespace();
         $table = self::$class::TABLE;
-        return self::getInstance()::$repository->save($table, $dataRequest);
+        return self::getInstance()::$repository->save( $dataRequest);
     }
 
     public static function update(): int
@@ -70,9 +67,8 @@ class Model
         $namespace = get_called_class();
         $getRequest = Request::getRequest()->get($by);
         self::$class = new $namespace();
-        $table = self::$class::TABLE;
         $classToHydrate = new $namespace();
-        $data = self::getInstance()::$repository->getBy($table, $getRequest);
+        $data = self::getInstance()::$repository->getBy( $getRequest);
         return self::getInstance()->hydrateData($classToHydrate, $data);
     }
 
@@ -82,10 +78,14 @@ class Model
         $postRequest = Request::getRequest()->post();
         self::$class = new $namespace();
         $table = self::$class::TABLE;
-        return self::getInstance()::$repository->delete($table, $postRequest);
+        return self::getInstance()::$repository->delete( $postRequest);
     }
 
-    private function hydrateData(Model $model, array $data)
+    public static function count():int {
+        return self::getInstance()::$repository->count();
+    }
+
+    protected function hydrateData(Model $model, array $data)
     {
         foreach ($data as $key => $value) {
             $functionName = 'set' . ucfirst($key);
@@ -93,4 +93,5 @@ class Model
         }
         return $model;
     }
+    
 }

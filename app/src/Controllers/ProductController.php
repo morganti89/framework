@@ -10,12 +10,21 @@ class ProductController extends Controller
 {
     public function list(): void
     {
+
         //chama o model do elemento
-        $produtos = ProductModel::all();
+        //$produtos = ProductModel::getInstance()::all();
+        $countProducts = ProductModel::getInstance()->count();
+
+
+        $products = ProductModel::getInstance()
+            ->getPerPage(Request::getRequest()->get('pagination')['pagination']?? 1);
 
         render_view(
             viewName: 'produtos/list',
-            viewVariables: ['produtos' => $produtos]
+            viewVariables: [
+                'produtos' => $products,
+                'count'=> ceil($countProducts/10)
+            ]
         );
     }
 

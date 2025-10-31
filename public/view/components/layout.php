@@ -10,13 +10,13 @@
 </head>
 
 <body>
-    <div class="container" id="layout">
+    <div class="_container" id="layout">
         <nav class="
             navbar
             navbar-expand-lg
-            bg-secondary
-            bg-gradient mb-5
-            _layout_content">
+            bg-light
+            mt-xl
+            w-100">
             <div class="container-fluid">
                 <a class="navbar-brand" href='<?= route('') ?>'>Home</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,16 +25,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="<?= route('produtos') ?>">Produtos</a>
+                            <a class="nav-link active" aria-current="page" href="<?= route('produtos/page/1') ?>">Produtos</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <form class="form-inline my-2 my-lg-0">
-                <a href="<?= route('login/logout')?>" class="btn btn-primary mr-2" type="submit">Logout</a>
+                <a href="<?= route('login/logout')?>" class="btn bg-light-green mr-xs" type="submit">Logout</a>
             </form>
         </nav>
-        <h1 class="mt-4 text-center" id="main_header"></h1>
+        <h1 class="mt-4 text-center main_header"></h1>
         <slot name="<?= isset($slot) ? $slot : '' ?>"></slot>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

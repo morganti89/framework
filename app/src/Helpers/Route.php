@@ -14,12 +14,12 @@ class Route
 
     public function __destruct()
     {
-
+        
         if (
             self::getInstance()->controller == null &&
             self::getInstance()->method == null
         ) {
-            redirect('404');
+            //redirect('404');
         }
 
 
@@ -97,7 +97,7 @@ class Route
     private static function isURL(string $route): bool
     {
 
-
+        
 
         $url = self::parseURL()[0] ?? '';
         $method = self::parseURL()[1] ?? '';
@@ -115,11 +115,18 @@ class Route
             $url = "$url/$method";
 
             if (str_contains($route, '{')) {
+
+                $ex = explode('/', $route);
+                $methodUrl = $ex[1];
+
                 if (preg_match("/\{([A-Za-z0-9_]+)\}/", $route, $matches)) {
-                    removeGET();
+                    
                     $key = $matches[1] ?? null;
                     if (!$key) return false;
-                    insertGET($key, $parameters);
+                    
+                    if ($method == $methodUrl) {
+                        insertGET($key, $parameters);
+                    }
                     $route = preg_replace("/\/\{([A-Za-z0-9_]+)\}/", "", $route);
                 }
                 return strcmp($url, $route) == 0;

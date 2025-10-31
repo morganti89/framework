@@ -1,7 +1,8 @@
-<x-layout title="produtos">
+<x-layout title="produtos" id="layout_form_product">
     <form 
         action= "<?= (isset($produtos) ? DIR_PAGE.'produtos/update' : '') ?>"
-        method="post">
+        method="post"
+        class="form__input">
         <div>
             <input hidden name="id" value="<?= isset($produtos) ? $produtos->id() : 0?>"/>
         </div>

@@ -20,31 +20,31 @@ function debug($message): void
 {
     echo '<pre>';
     echo "$message </br>";
-    echo '</pre>';
+    echo '</pre><br>';
 }
 
 function render_view(string $viewName, array $viewVariables = []): void
 {
-    if (!empty($viewVariables)) {
-        $key = array_keys($viewVariables)[0];
-    }
-
-
 
     if (file_exists(DIR_VIEW . "components/layout.php")) {
 
         extract([
             'slot' => $viewName,
-            $key => $viewVariables[$key]
         ]);
 
-        require_once(DIR_VIEW . "{$viewName}.php");
-
+        if (!empty($viewVariables)) {
+            foreach ($viewVariables as $key => $value) {
+                extract([
+                    $key => $value
+                ]);
+            }
+        }
         load_js(jsFile: ['layout.js']);
         require_once(DIR_VIEW . "components/layout.php");
+        require_once(DIR_VIEW . "{$viewName}.php");
 
         if (!file_exists(DIR_VIEW . $viewName . '.php')) {
-            redirect('http/404');
+            //redirect('http/404');
             return;
         }
     } else {

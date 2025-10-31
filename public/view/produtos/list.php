@@ -1,19 +1,39 @@
+<head>
+    <link rel="stylesheet" href="<?= DIR_CSS . 'pagination.css' ?>">
+</head>
 <x-layout title="produtos">
-    <a class="btn btn-dark mb-2" href="<?= route('produtos/add') ?>">Criar produto</a>
-    <ul class="list-group list-group-flush ">
+    <a class="btn mb-2 bg-light-green" href="<?= route('produtos/add') ?>">Criar produto</a>
+    <ul class="list list-group list-group-flush">
+        <li class="
+                list-group-item
+                d-flex
+                align-items-center
+                p-3
+                list-light">
+            <div class="w-25">
+                Produto
+            </div>
+            <div class="w-50">
+                Preço
+            </div class="">
+                <div>
+                Ação
+            </div>
+        </li>
+
+
         <?php foreach ($produtos as $key => $produto): ?>
             <li class="
                 list-group-item
-                list-group-item-dark
                 d-flex
-                justify-content-between
                 align-items-center
                 p-3
+                list-light
                 ">
                 <div class="w-25">
                     <?= $produto->nome() ?>
                 </div>
-                <div>
+                <div class="w-50">
                     <?= $produto->precoFormat() ?>
                 </div>
                 <div >
@@ -32,4 +52,9 @@
             </li>
         <?php endforeach ?>
     </ul>
+    <div class="pagination">
+        <?php for($i = 1; $i <= $count; $i++): ?>
+            <a href="<?= route('produtos/page/'.$i)?>"><?=$i?></a>
+        <?php endfor ?>
+    </div>
 </x-layout>

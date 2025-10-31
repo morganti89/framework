@@ -26,6 +26,8 @@ class DB
 
     private static array $conditions;
 
+    private static array $parameters;
+
     public function __construct()
     {
 
@@ -115,6 +117,30 @@ class DB
         return self::$instance;
     }
 
+    public function sql(string $sql): DB|null
+    {
+        self::$sql = $sql;
+        return self::$instance;
+    }
+
+    public function parameters(array $data = []): DB|null
+    {
+        self::$parameters = $data;
+        return self::$instance;
+    }
+
+    public function make(): DB|null
+    {
+
+        self::$statement = self::getInstance()->getConnetion()->prepare(self::$sql);
+
+        foreach (self::$parameters as $key => $value) {
+            self::$statement->bindValue(":$key", $value);
+        }
+        self::$statement->execute();
+        return self::$instance;
+    }
+
     public static function create(array $data): DB
     {
         $keys = self::getInstance()->parseKeys($data);
@@ -140,7 +166,6 @@ class DB
         $stmt = self::getInstance()->getConnetion()->prepare($sql);
 
         foreach ($data as $key => $value) {
-            echo $key . " " . $value;
             $stmt->bindValue(":$key", $value);
         }
 
@@ -184,6 +209,14 @@ class DB
         $keys['bind'] = substr($keys['bind'], 0, -1);
         $keys['update'] = substr($keys['update'], 0, -1);
         return $keys;
+    }
+
+    public function count(): mixed
+    {
+        $sql = "SELECT count(id) FROM " . self::$table;
+        $stmt = self::getInstance()->getConnetion()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch()['count(id)'];
     }
 
     private function parseValues($data): array

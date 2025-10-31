@@ -1,0 +1,15 @@
+.pagination {
+    padding:var(--p-xl);
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.pagination > a {
+    background-color: var(--bg-c-light);
+    color: var(--c-text-dark);
+    padding: var(--p-xs);
+    border-radius: 8px;
+    text-decoration: none;
+}
+

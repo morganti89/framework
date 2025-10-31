@@ -7,11 +7,12 @@ window.onload = (event) => {
 		layout.remove();
 		layout.style.display = "none";
 	}
-	layout.style.display = "block";	
+	layout.style.display = "flex";
 	slot.appendChild(xlayout);
 	const title = xlayout.attributes.title.value;
 	document.title = title;
-	const mainHeader = document.querySelector('#main_header');
+	const mainHeader = document.querySelector('.main_header');
+	console.log(mainHeader);
 	mainHeader.innerHTML = title;
 
 }

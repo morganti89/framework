@@ -12,7 +12,7 @@ class UserModel extends Model {
 
     public function __construct() {
         $repository = new UserRepository();
-        parent::getInstance()->setRepository($repository);
+        parent::getInstance()->setRepository($repository, self::TABLE);
     }
 
     public function getUser(string $by): object {

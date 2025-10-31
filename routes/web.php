@@ -18,7 +18,7 @@ Route::get('login/logout',[LoginController::class,'logout']);
 Route::get('user/form',[UserController::class,'userForm']);
 Route::post('user/create_user',[UserController::class,'createUser']);
 
-Route::get('produtos',[ProductController::class,'list'])
+Route::get('produtos/page/{pagination}',[ProductController::class,'list'])
     ->authRequired();
 Route::get('produtos/add',[ProductController::class,'createForm']);
 Route::post('produtos/add',[ProductController::class,'create']);

@@ -13,15 +13,23 @@ class ProductModel extends Model
      * Necessário inserir a tabela que será feito as buscas
      * */
     const TABLE = 'produtos';
+    private static $instance;
     private ?int $id;
     private string $nome;
     private float $preco;
-    
-    
+
 
     public function __construct() {
         $productRepository = new ProductRepository();
-        parent::getInstance()->setRepository($productRepository);
+        parent::getInstance()->setRepository($productRepository, self::TABLE);
+    }
+
+    public static function getInstance(): self
+    {
+        if (self::$instance == null) {
+            self::$instance = new self;
+        }
+        return self::$instance;
     }
 
     public function setId(int $id):void
@@ -50,4 +58,16 @@ class ProductModel extends Model
     public function precoFormat():string {
         return number_format($this->preco,2,'.','');
     }
+
+    public function getPerPage(?int $page): array {
+        $dataList = [];
+        $data = parent::getInstance()::$repository->getPerPage($page);
+        foreach ($data as $key => $value) {
+            $classToHydrate = new ProductModel();
+            $dataList[] = parent::getInstance()->hydrateData($classToHydrate, $value);
+        }
+
+        return $dataList;
+    }
+    
 }
